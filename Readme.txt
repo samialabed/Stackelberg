@@ -13,6 +13,10 @@ To do so, you need to implement a leader class by extending the abstract class P
 A very simple example of leader class, comp34120.ex2.SimpleLeader, has been provided, and its source code is under /src as well.
 
 To run the simulation with the comp34120.ex2.SimpleLeader, you need to
+either:
+i) run ./launch.sh
+
+or
 
 i) run
 
@@ -22,13 +26,13 @@ to enable RMI registration;
 
 ii) run
 
-java -classpath lin/poi-3.7-20101029.jar: -Djava.rmi.server.hostname=127.0.0.1 lib.comp34120.ex2.Main &
+java -classpath poi-3.7-20101029.jar: -Djava.rmi.server.hostname=127.0.0.1 comp34120.ex2.Main &
 
 to run the GUI of the platform;
 
 iii) run
 
-java -Djava.rmi.server.hostname=127.0.0.1 comp34120.ex2.SimpleLeader &
+java -Djava.rmi.server.hostname=127.0.0.1 SimpleLeader &
 
 to run the comp34120.ex2.SimpleLeader.
 
