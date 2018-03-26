@@ -1,10 +1,34 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-
     <groupId>comp34120</groupId>
     <artifactId>lab2</artifactId>
     <version>lab2</version>
+    <modelVersion>4.0.0</modelVersion>
+
+    <name>lab2</name>
+    <url>http://maven.apache.org</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- https://deeplearning4j.org/overview DeepLearning plugin -->
+        <!-- Change the nd4j.backend property to nd4j-cuda-7.5-platform or nd4j-cuda-8.0-platform to use CUDA GPUs -->
+        <nd4j.backend>nd4j-native-platform</nd4j.backend>
+        <!--<nd4j.backend>nd4j-cuda-8.0-platform</nd4j.backend>--> <!-- uncomment this to use cuda -->
+        <!-- Library version to use -->
+        <java.version>1.8</java.version>
+        <nd4j.version>0.9.1</nd4j.version>
+        <dl4j.version>0.9.1</dl4j.version>
+        <datavec.version>0.9.1</datavec.version>
+        <arbiter.version>0.9.1</arbiter.version>
+        <rl4j.version>0.9.1</rl4j.version>
+        <!-- Scala binary version: DL4J's Spark and UI functionality are released with both Scala 2.10 and 2.11 support -->
+        <scala.binary.version>2.11</scala.binary.version>
+        <!-- Hadoop version used by Spark 1.6.3 and 2.2.1 (and likely others) -->
+        <hadoop.version>2.2.0</hadoop.version>
+    </properties>
+    <packaging>jar</packaging>
+
     <build>
         <plugins>
             <plugin>
@@ -17,16 +41,93 @@
             </plugin>
         </plugins>
     </build>
-    <packaging>jar</packaging>
-
-    <name>lab2</name>
-    <url>http://maven.apache.org</url>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.nd4j</groupId>
+                <artifactId>nd4j-native-platform</artifactId>
+                <version>${nd4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.nd4j</groupId>
+                <artifactId>nd4j-cuda-7.5-platform</artifactId>
+                <version>${nd4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.nd4j</groupId>
+                <artifactId>nd4j-cuda-8.0-platform</artifactId>
+                <version>${nd4j.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
+        <!-- ND4J backend. You need one in every DL4J project. Normally define artifactId as either "nd4j-native-platform" or "nd4j-cuda-7.5-platform" -->
+        <dependency>
+            <groupId>org.nd4j</groupId>
+            <artifactId>${nd4j.backend}</artifactId>
+            <version>${nd4j.version}</version>
+        </dependency>
+
+        <!-- Core DL4J functionality -->
+        <dependency>
+            <groupId>org.deeplearning4j</groupId>
+            <artifactId>deeplearning4j-core</artifactId>
+            <version>${dl4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.deeplearning4j</groupId>
+            <artifactId>deeplearning4j-nlp</artifactId>
+            <version>${dl4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.deeplearning4j</groupId>
+            <artifactId>deeplearning4j-zoo</artifactId>
+            <version>${dl4j.version}</version>
+        </dependency>
+
+        <!-- deeplearning4j-ui is used for visualization: see http://deeplearning4j.org/visualization -->
+        <dependency>
+            <groupId>org.deeplearning4j</groupId>
+            <artifactId>deeplearning4j-ui_${scala.binary.version}</artifactId>
+            <version>${dl4j.version}</version>
+        </dependency>
+
+        <!-- ParallelWrapper & ParallelInference live here -->
+        <dependency>
+            <groupId>org.deeplearning4j</groupId>
+            <artifactId>deeplearning4j-parallel-wrapper_${scala.binary.version}</artifactId>
+            <version>${dl4j.version}</version>
+        </dependency>
+
+        <!-- Next 2: used for MapFileConversion Example. Note you need *both* together -->
+        <dependency>
+            <groupId>org.datavec</groupId>
+            <artifactId>datavec-hadoop</artifactId>
+            <version>${datavec.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-common</artifactId>
+            <version>${hadoop.version}</version>
+        </dependency>
+
+
+        <!-- Arbiter - used for hyperparameter optimization (grid/random search) -->
+        <dependency>
+            <groupId>org.deeplearning4j</groupId>
+            <artifactId>arbiter-deeplearning4j</artifactId>
+            <version>${arbiter.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.deeplearning4j</groupId>
+            <artifactId>arbiter-ui_2.11</artifactId>
+            <version>${arbiter.version}</version>
+        </dependency>
+
+        <!-- Unit testing dependency -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
