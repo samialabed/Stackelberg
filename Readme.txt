@@ -4,15 +4,15 @@
 
 This experiment platform is implemented using Java SE 6 with RMI, so that you can implement your own Java classes and run them without knowing the detail of the platform.
 
-To do so, you need to implement a leader class by extending the abstract class PlayerImpl in package comp34120.ex2, and some essential source codes are under /src.
+To do so, you need to implement a leader class by extending the abstract class PlayerImpl in package main.comp34120.ex2, and some essential source codes are under /src.
 
 **********************
 * 2.Running the demo *
 **********************
 
-A very simple example of leader class, comp34120.ex2.SimpleLeader, has been provided, and its source code is under /src as well.
+A very simple example of leader class, main.comp34120.ex2.SimpleLeader, has been provided, and its source code is under /src as well.
 
-To run the simulation with the comp34120.ex2.SimpleLeader, you need to
+To run the simulation with the main.comp34120.ex2.SimpleLeader, you need to
 either:
 i) run ./launch.sh
 
@@ -26,7 +26,7 @@ to enable RMI registration;
 
 ii) run
 
-java -classpath poi-3.7-20101029.jar: -Djava.rmi.server.hostname=127.0.0.1 comp34120.ex2.Main &
+java -classpath poi-3.7-20101029.jar: -Djava.rmi.server.hostname=127.0.0.1 main.comp34120.ex2.Main &
 
 to run the GUI of the platform;
 
@@ -34,7 +34,7 @@ iii) run
 
 java -Djava.rmi.server.hostname=127.0.0.1 SimpleLeader &
 
-to run the comp34120.ex2.SimpleLeader.
+to run the main.comp34120.ex2.SimpleLeader.
 
 And after these steps, you can play with the GUI to get some ideas of how the platform works.
 
@@ -103,7 +103,7 @@ Similar to the method of the platform, this method does nothing, just for detect
 public void goodbye()
 	throws RemoteException;
 
-The platform will call this method when you close the GUI of the platform. An example of the use of this method can be found in comp34120.ex2.SimpleLeader, after calling which the program exits. You may make the choice whether override this method or not.
+The platform will call this method when you close the GUI of the platform. An example of the use of this method can be found in main.comp34120.ex2.SimpleLeader, after calling which the program exits. You may make the choice whether override this method or not.
 
 3.3.3. Start the simulation
 
