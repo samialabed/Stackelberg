@@ -10,9 +10,9 @@ To do so, you need to implement a leader class by extending the abstract class P
 * 2.Running the demo *
 **********************
 
-A very simple example of leader class, SimpleLeader, has been provided, and its source code is under /src as well.
+A very simple example of leader class, comp34120.ex2.SimpleLeader, has been provided, and its source code is under /src as well.
 
-To run the simulation with the SimpleLeader, you need to
+To run the simulation with the comp34120.ex2.SimpleLeader, you need to
 
 i) run
 
@@ -22,15 +22,15 @@ to enable RMI registration;
 
 ii) run
 
-java -classpath poi-3.7-20101029.jar: -Djava.rmi.server.hostname=127.0.0.1 comp34120.ex2.Main &
+java -classpath lin/poi-3.7-20101029.jar: -Djava.rmi.server.hostname=127.0.0.1 lib.comp34120.ex2.Main &
 
 to run the GUI of the platform;
 
 iii) run
 
-java -Djava.rmi.server.hostname=127.0.0.1 SimpleLeader &
+java -Djava.rmi.server.hostname=127.0.0.1 comp34120.ex2.SimpleLeader &
 
-to run the SimpleLeader.
+to run the comp34120.ex2.SimpleLeader.
 
 And after these steps, you can play with the GUI to get some ideas of how the platform works.
 
@@ -99,7 +99,7 @@ Similar to the method of the platform, this method does nothing, just for detect
 public void goodbye()
 	throws RemoteException;
 
-The platform will call this method when you close the GUI of the platform. An example of the use of this method can be found in SimpleLeader, after calling which the program exits. You may make the choice whether override this method or not.
+The platform will call this method when you close the GUI of the platform. An example of the use of this method can be found in comp34120.ex2.SimpleLeader, after calling which the program exits. You may make the choice whether override this method or not.
 
 3.3.3. Start the simulation
 
