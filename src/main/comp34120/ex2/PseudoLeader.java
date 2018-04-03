@@ -4,8 +4,8 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
 /**
- * A pseudo leader. The members m_platformStub and m_type are declared in the PlayerImpl, and feel free to use them. You
- * may want to check the implementation of the PlayerImpl. You will use m_platformStub to access the platform by calling
+ * A pseudo leader. The members platform and playerType are declared in the PlayerImpl, and feel free to use them. You
+ * may want to check the implementation of the PlayerImpl. You will use platform to access the platform by calling
  * the remote method provided by it.
  */
 final class PseudoLeader extends PlayerImpl {
@@ -50,12 +50,12 @@ final class PseudoLeader extends PlayerImpl {
     /**
      * You may want to delete this method if you don't want to do any initialization
      *
-     * @param p_steps Indicates how many steps will the simulation perform
+     * @param simulationSteps Indicates how many steps will the simulation perform
      * @throws RemoteException If implemented, the RemoteException *MUST* be thrown by this method
      */
     @Override
-    public void startSimulation(int p_steps) throws RemoteException {
-        super.startSimulation(p_steps);
+    public void startSimulation(int simulationSteps) throws RemoteException {
+        super.startSimulation(simulationSteps);
         //TO DO: delete the line above and put your own initialization code here
     }
 
@@ -80,14 +80,14 @@ final class PseudoLeader extends PlayerImpl {
     public void proceedNewDay(int p_date) throws RemoteException {
         /*
          * Check for new price
-         * Record l_newRecord = m_platformStub.query(m_type, p_date);
+         * Record l_newRecord = platform.query(playerType, p_date);
          *
          * Your own math model to compute the price here
          * ...
          * float l_newPrice = ....
          *
          * Submit your new price, and end your phase
-         * m_platformStub.publishPrice(m_type, l_newPrice);
+         * platform.publishPrice(playerType, l_newPrice);
          */
     }
 }
