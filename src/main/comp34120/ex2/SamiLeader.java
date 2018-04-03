@@ -2,7 +2,6 @@ package comp34120.ex2;
 
 import comp34120.ex2.accessor.DataAccessor;
 import comp34120.ex2.accessor.DataAccessorImpl;
-import comp34120.ex2.accessor.Record;
 
 import java.io.IOException;
 import java.rmi.NotBoundException;

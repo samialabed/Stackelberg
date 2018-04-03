@@ -1,6 +1,5 @@
 package comp34120.ex2;
 
-import comp34120.ex2.accessor.Record;
 
 import java.rmi.NotBoundException;
 import java.rmi.Remote;

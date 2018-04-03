@@ -1,7 +1,7 @@
 package comp34120.ex2.accessor;
 
-import com.google.common.collect.ImmutableList;
 import comp34120.ex2.FollowerType;
+import comp34120.ex2.Record;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
@@ -20,12 +20,14 @@ public class DataAccessorImpl implements DataAccessor {
     private final Map<FollowerType, PlayerParameter> followerTypeToParameterMap;
     // TODO(samialab): Do we need to have this dynamic?
     private final PlayerParameter leaderParameter;
-
+    private final Map<Integer, Double> disturbancesMap;
     private final HSSFWorkbook workbook;
 
     public DataAccessorImpl(String dataFilePath) throws IOException {
         followerTypeToHistoricRecordsMap = new HashMap<>();
         followerTypeToParameterMap = new HashMap<>();
+        disturbancesMap = new HashMap<>();
+
         //Get the workbook instance for XLS file
         FileInputStream file = new FileInputStream(new File(dataFilePath));
         workbook = new HSSFWorkbook(file);
@@ -33,13 +35,14 @@ public class DataAccessorImpl implements DataAccessor {
         // Begin parsing the data sheet
         initialiseFollowerHistoricData();
         initialiseFollowerParameters();
+        initialiseDisturbances();
         leaderParameter = new PlayerParameter(3, parseLeaderParameter());
     }
+
 
     @Override
     public PlayerParameter getLeaderParameter() {
         return leaderParameter;
-
     }
 
     @Override
@@ -50,6 +53,19 @@ public class DataAccessorImpl implements DataAccessor {
     @Override
     public PlayerParameter getFollowerParameter(FollowerType followerType) {
         return followerTypeToParameterMap.get(followerType);
+    }
+
+    @Override
+    public Map<Integer, Double> getDisturbancesMap() {
+        return disturbancesMap;
+    }
+
+    @Override
+    public Double getDisturbance(int day) {
+        if (day < 101 || day > 130) {
+            throw new IllegalArgumentException("Disturbance data exist only for days 101 to 130 inclusive");
+        }
+        return disturbancesMap.get(day);
     }
 
     private void initialiseFollowerHistoricData() {
@@ -92,26 +108,54 @@ public class DataAccessorImpl implements DataAccessor {
             Iterator<Row> rowIterator = sheet.iterator();
             int parametersQuantity = (int) rowIterator.next().getCell(parameterQuantityCellIndex).getNumericCellValue();
             Map<String, List<Double>> parameterNameToValuesMap = new HashMap<>();
-            rowIterator.forEachRemaining(row -> {
-                List<Double> parameterValues = new LinkedList<>();
-                String parameterName = row.getCell(parameterNameCellIndex).getStringCellValue();
-                int quantity = (int) row.getCell(parameterQuantityCellIndex).getNumericCellValue();
-                for (int col = 2; col <= quantity + 1; col++) {
-                    Double value = row.getCell(col).getNumericCellValue();
-                    parameterValues.add(value);
-                }
-                parameterNameToValuesMap.put(parameterName, parameterValues);
-            });
+            parsePlayerParameterSheet(parameterNameToValuesMap,
+                                      parameterNameCellIndex,
+                                      parameterQuantityCellIndex,
+                                      rowIterator);
             PlayerParameter playerParameter = new PlayerParameter(parametersQuantity, parameterNameToValuesMap);
             followerTypeToParameterMap.put(followerType, playerParameter);
         }
     }
 
+    private void initialiseDisturbances() {
+        HSSFSheet sheet = workbook.getSheet("Disturbance_Dummy");
+        //Get iterator to all the rows in current sheet
+        Iterator<Row> rowIterator = sheet.iterator();
+        rowIterator.next(); //Skip first row which has headers
+        int dateCellIndex = 0;
+        int disturbanceCellIndex = 1;
+
+        // Parse the worksheet and extract information
+        rowIterator.forEachRemaining(row -> {
+            Integer date = (int) row.getCell(dateCellIndex).getNumericCellValue();
+            Double disturbanceValue = row.getCell(disturbanceCellIndex).getNumericCellValue();
+            disturbancesMap.put(date, disturbanceValue);
+        });
+    }
+
     private Map<String, List<Double>> parseLeaderParameter() {
         Map<String, List<Double>> parameterMap = new HashMap<>();
-        parameterMap.put("a_L", ImmutableList.of(2.0));
-        parameterMap.put("b_L", ImmutableList.of(1.0));
-        parameterMap.put("c_L", ImmutableList.of(0.3));
+        int parameterNameCellIndex = 0;
+        int parameterQuantityCellIndex = 1;
+        HSSFSheet sheet = workbook.getSheet("Leader_Dummy");
+        //Get iterator to all the rows in current sheet
+        Iterator<Row> rowIterator = sheet.iterator();
+        rowIterator.next();
+        parsePlayerParameterSheet(parameterMap, parameterNameCellIndex, parameterQuantityCellIndex, rowIterator);
         return parameterMap;
+    }
+
+    private void parsePlayerParameterSheet(Map<String, List<Double>> parameterMap, int parameterNameCellIndex, int
+            parameterQuantityCellIndex, Iterator<Row> rowIterator) {
+        rowIterator.forEachRemaining(row -> {
+            List<Double> parameterValues = new LinkedList<>();
+            String parameterName = row.getCell(parameterNameCellIndex).getStringCellValue();
+            int quantity = (int) row.getCell(parameterQuantityCellIndex).getNumericCellValue();
+            for (int col = 2; col <= quantity + 1; col++) {
+                Double value = row.getCell(col).getNumericCellValue();
+                parameterValues.add(value);
+            }
+            parameterMap.put(parameterName, parameterValues);
+        });
     }
 }
