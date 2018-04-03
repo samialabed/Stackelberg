@@ -139,5 +139,12 @@
             <artifactId>testng</artifactId>
             <version>RELEASE</version>
         </dependency>
+
+        <!-- Apache POI for parsing Excel filesheet -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.8</version>
+        </dependency>
     </dependencies>
 </project>
