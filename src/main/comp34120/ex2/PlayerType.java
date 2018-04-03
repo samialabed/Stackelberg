@@ -7,5 +7,5 @@ public enum PlayerType {
     LEADER,
     FOLLOWER;
 
-    public static final PlayerType[] s_playerTypes = PlayerType.values();
+    public static final PlayerType[] playerTypes = PlayerType.values();
 }
