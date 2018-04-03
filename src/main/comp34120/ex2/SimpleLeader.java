@@ -32,7 +32,7 @@ final class SimpleLeader extends PlayerImpl {
      */
     @Override
     public void proceedNewDay(int p_date) throws RemoteException {
-        m_platformStub.publishPrice(m_type, genPrice(1.8f, 0.05f));
+        platform.publishPrice(playerType, genPrice(1.8f, 0.05f));
     }
 
     /**
