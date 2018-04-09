@@ -1,4 +1,4 @@
-package comp34120.ex2.Utils;
+package comp34120.ex2.utils;
 
 import comp34120.ex2.Platform;
 import comp34120.ex2.PlayerType;

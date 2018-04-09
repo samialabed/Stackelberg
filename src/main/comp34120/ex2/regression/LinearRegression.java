@@ -1,7 +1,7 @@
 package comp34120.ex2.regression;
 
 import comp34120.ex2.Record;
-import comp34120.ex2.Utils.NeuralNetUtil;
+import comp34120.ex2.utils.NeuralNetUtil;
 import org.deeplearning4j.datasets.iterator.impl.ListDataSetIterator;
 import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
 import org.deeplearning4j.nn.conf.layers.DenseLayer;

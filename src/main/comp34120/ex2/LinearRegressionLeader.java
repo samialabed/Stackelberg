@@ -1,7 +1,7 @@
 package comp34120.ex2;
 
-import comp34120.ex2.Utils.NeuralNetUtil;
-import comp34120.ex2.Utils.PlatformUtil;
+import comp34120.ex2.utils.NeuralNetUtil;
+import comp34120.ex2.utils.PlatformUtil;
 import comp34120.ex2.regression.LinearRegression;
 import comp34120.ex2.regression.Regression;
 
