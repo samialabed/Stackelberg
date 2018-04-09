@@ -11,7 +11,6 @@ import java.rmi.RemoteException;
 // Linear Regression leader using NN
 final class LinearRegressionLeader extends PlayerImpl {
     private final Regression regression;
-    private final static float UNIT_COST = 1.0f;
 
     public LinearRegressionLeader() throws RemoteException, NotBoundException {
         super(PlayerType.LEADER, "Linear Regression NN Leader");
@@ -46,7 +45,7 @@ final class LinearRegressionLeader extends PlayerImpl {
 
         // TODO(samialab): Implement price function
         int leaderNewPrice = 2;
-        float predictedFollowerPrice = regression.predictFollowerPrice(newDate, leaderNewPrice, UNIT_COST);
+        float predictedFollowerPrice = regression.predictFollowerPrice(newDate, leaderNewPrice);
         platform.log(playerType, "Predicted follower price: " + predictedFollowerPrice);
 
         platform.publishPrice(playerType, leaderNewPrice);
