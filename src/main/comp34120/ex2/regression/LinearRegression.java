@@ -1,7 +1,7 @@
 package comp34120.ex2.regression;
 
-import comp34120.ex2.Utils.NeuralNetUtil;
 import comp34120.ex2.Record;
+import comp34120.ex2.Utils.NeuralNetUtil;
 import org.deeplearning4j.datasets.iterator.impl.ListDataSetIterator;
 import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
 import org.deeplearning4j.nn.conf.layers.DenseLayer;
@@ -23,18 +23,44 @@ public class LinearRegression implements Regression {
     // Network learning rate
     private static final double learningRate = 0.01;
     // Create the network
-    private static final int numInput = 3;
+    private static final int numInput = 2;
     private static final int numOutputs = 1;
     private static final int nHidden = 1;
 
 
-    private final MultiLayerNetwork NEURAL_NETWORK;
+    private final MultiLayerNetwork neuralNetwork;
     private final NeuralNetUtil neuralNetUtil;
 
+    public LinearRegression(NeuralNetUtil neuralNetUtil) {
+        this.neuralNetUtil = neuralNetUtil;
+        // TODO(samialab): configure the network properly
+        this.neuralNetwork = new MultiLayerNetwork(new NeuralNetConfiguration.Builder()
+                                                           .seed(seed)
+                                                           .weightInit(WeightInit.XAVIER)
+                                                           .updater(new Nesterovs(learningRate, 0.9))
+                                                           .list()
+                                                           .layer(0,
+                                                                  new DenseLayer.Builder().nIn(numInput)
+                                                                                          .nOut(nHidden)
+                                                                                          .activation(Activation.TANH)
+                                                                                          .build())
+                                                           .layer(1,
+                                                                  new OutputLayer.Builder(LossFunctions.LossFunction
+                                                                                                  .MSE)
+                                                                          .activation(Activation.IDENTITY)
+                                                                          .nIn(nHidden).nOut(numOutputs)
+                                                                          .build())
+                                                           .pretrain(false)
+                                                           .backprop(true)
+                                                           .build());
+        neuralNetwork.init();
+        neuralNetwork.setListeners(new ScoreIterationListener(1));
+    }
+
     @Override
-    public float predictFollowerPrice(int day, float leaderPrice, float unitCost) {
-        INDArray inputFeatureVector = neuralNetUtil.createInputFeatureVector(day, leaderPrice, unitCost);
-        INDArray predictedPrice = NEURAL_NETWORK.output(inputFeatureVector, false);
+    public float predictFollowerPrice(int day, float leaderPrice) {
+        INDArray inputFeatureVector = neuralNetUtil.createInputFeatureVector(day, leaderPrice);
+        INDArray predictedPrice = neuralNetwork.output(inputFeatureVector, false);
         return predictedPrice.getFloat(0);
     }
 
@@ -46,34 +72,8 @@ public class LinearRegression implements Regression {
         // Train the network on the full data set, and evaluate in periodically
         for (int i = 0; i < nEpochs; i++) {
             trainingDataIterator.reset();
-            NEURAL_NETWORK.fit(trainingDataIterator);
+            neuralNetwork.fit(trainingDataIterator);
         }
     }
 
-    public LinearRegression(NeuralNetUtil neuralNetUtil) {
-        this.neuralNetUtil = neuralNetUtil;
-        // TODO(samialab): configure the network properly
-        NEURAL_NETWORK = new MultiLayerNetwork(new NeuralNetConfiguration.Builder()
-                                                       .seed(seed)
-                                                       .weightInit(WeightInit.XAVIER)
-                                                       .updater(new Nesterovs(learningRate, 0.9))
-                                                       .list()
-                                                       .layer(0,
-                                                              new DenseLayer.Builder().nIn(numInput)
-                                                                                      .nOut(nHidden)
-                                                                                      .activation(Activation.TANH)
-                                                                                      .build())
-                                                       .layer(1,
-                                                              new OutputLayer.Builder(LossFunctions.LossFunction.MSE)
-                                                                      .activation(Activation.IDENTITY)
-                                                                      .nIn(nHidden).nOut(numOutputs)
-                                                                      .build())
-                                                       .pretrain(false)
-                                                       .backprop(true)
-                                                       .build()
-        );
-        NEURAL_NETWORK.init();
-        NEURAL_NETWORK.setListeners(new ScoreIterationListener(1));
-
-    }
 }
