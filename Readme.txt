@@ -18,7 +18,7 @@ i) run ./launch.sh
 
 or
 
-i) run
+i) run (if it is not running already)
 
 /usr/java/latest/bin/rmiregistry &
 
@@ -26,7 +26,7 @@ to enable RMI registration;
 
 ii) run
 
-java -classpath poi-3.7-20101029.jar: -Djava.rmi.server.hostname=127.0.0.1 comp34120.ex2.Main &
+java -jar platform.jar -Djava.rmi.server.hostname=127.0.0.1 &
 
 to run the GUI of the platform;
 
