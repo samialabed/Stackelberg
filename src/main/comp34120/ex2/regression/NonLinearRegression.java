@@ -20,14 +20,13 @@ public class NonLinearRegression implements Regression {
     // Random number generator seed, for reproducibility
     private static final int seed = 12345;
     // Number of epochs (full passes of the data)
-    private static final int nEpochs = 10;
+    private static final int nEpochs = 3;
     // Network learning rate
-    private static final double learningRate = 0.01;
+    private static final double learningRate = 0.001;
     // Create the network
     private static final int numInput = 2;
     private static final int numOutputs = 1;
-    private static final int nHidden = 5;
-
+    private static final int nHidden = 10;
 
     private final MultiLayerNetwork neuralNetwork;
     private final NeuralNetUtil neuralNetUtil;
@@ -37,6 +36,7 @@ public class NonLinearRegression implements Regression {
         this.neuralNetwork = new MultiLayerNetwork(new NeuralNetConfiguration.Builder()
                                                            .seed(seed)
                                                            .weightInit(WeightInit.XAVIER)
+                                                           .regularization(true).l2(0.0005)
                                                            .updater(new Adam(learningRate, 0.5, 0.99,
                                                                              Adam.DEFAULT_ADAM_EPSILON))
                                                            .list()
@@ -46,8 +46,7 @@ public class NonLinearRegression implements Regression {
                                                                                           .activation(Activation.TANH)
                                                                                           .build())
                                                            .layer(1,
-                                                                  new OutputLayer.Builder(LossFunctions.LossFunction
-                                                                                                  .MSE)
+                                                                  new OutputLayer.Builder(LossFunctions.LossFunction.MSE)
                                                                           .activation(Activation.IDENTITY)
                                                                           .nIn(nHidden).nOut(numOutputs)
                                                                           .build())
@@ -56,11 +55,18 @@ public class NonLinearRegression implements Regression {
                                                            .build());
         neuralNetwork.init();
         neuralNetwork.setListeners(new ScoreIterationListener(1));
+
+        DataSetIterator trainingDataIterator = new ListDataSetIterator<>(neuralNetUtil.getTrainingDataSet().asList());
+        // Train the network on the full data set, and evaluate in periodically
+        for (int i = 0; i < 200; i++) {
+            trainingDataIterator.reset();
+            neuralNetwork.fit(trainingDataIterator);
+        }
     }
 
     @Override
-    public float predictFollowerPrice(int day, double leaderPrice) {
-        INDArray inputFeatureVector = neuralNetUtil.createInputFeatureVector(day, leaderPrice);
+    public float predictFollowerPrice(double day, double leaderPrice) {
+        INDArray inputFeatureVector = neuralNetUtil.createInputFeatureVector(day / 100.0, leaderPrice);
         INDArray predictedPrice = neuralNetwork.output(inputFeatureVector, false);
         return predictedPrice.getFloat(0);
     }

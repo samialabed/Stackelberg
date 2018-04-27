@@ -4,9 +4,9 @@ import comp34120.ex2.regression.Regression;
 
 public class RegressionPayoffFunction implements math.functions.IFunction {
     private final Regression regression;
-    private final int date;
+    private final double date;
 
-    public RegressionPayoffFunction(Regression regression, int date){
+    public RegressionPayoffFunction(Regression regression, double date){
         this.regression = regression;
         this.date = date;
     }

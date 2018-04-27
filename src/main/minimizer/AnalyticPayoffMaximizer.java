@@ -14,12 +14,12 @@ public class AnalyticPayoffMaximizer implements PayoffMaximizer{
     }
 
     @Override
-    public double getOptimalPrice(int date) {
+    public double getOptimalPrice(double date) {
         // Start from multiple points to avoid ending up in a local maximum
         math.functions.IFunction payoffFunction = new RegressionPayoffFunction(this.reactionFunction, date);
         double optimalPayoff = -100000;
         double optimalPrice = 1.0;
-        double learningRate = 0.001;
+        double learningRate = 0.005;
 
         Random random = new Random();
         for(int i = 0; i < 4; i++) {

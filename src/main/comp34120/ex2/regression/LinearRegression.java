@@ -58,7 +58,7 @@ public class LinearRegression implements Regression {
     }
 
     @Override
-    public float predictFollowerPrice(int day, double leaderPrice) {
+    public float predictFollowerPrice(double day, double leaderPrice) {
         INDArray inputFeatureVector = neuralNetUtil.createInputFeatureVector(day, leaderPrice);
         INDArray predictedPrice = neuralNetwork.output(inputFeatureVector, false);
         return predictedPrice.getFloat(0);

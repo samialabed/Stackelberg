@@ -1,5 +1,5 @@
 package minimizer;
 
 public interface PayoffMaximizer {
-    double getOptimalPrice(int date);
+    double getOptimalPrice(double date);
 }

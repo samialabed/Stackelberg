@@ -11,14 +11,14 @@ public class SimplePayoffMaximizer implements PayoffMaximizer{
         this.reactionFunction = reactionFunction;
     }
 
-    private double getPredictedPayoff(int date, double price){
+    private double getPredictedPayoff(double date, double price){
         double followerPrice = reactionFunction.predictFollowerPrice(date, price);
         double demandModel = 2.0 - price + 0.3 * followerPrice;
         return (price - 1.0) * demandModel;
     }
 
     @Override
-    public double getOptimalPrice(int date) {
+    public double getOptimalPrice(double date) {
         double optimalPayoff = -1000000;
         double optimalPrice = 1.0;
         for(double price = 1.0; price <= priceUpperBound; price += 0.1) {

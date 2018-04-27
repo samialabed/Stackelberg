@@ -17,7 +17,7 @@ public class NeuralNetUtil {
         double[] followerOutputs = new double[records.length];
 
         for (int i = 0; i < records.length; i++) {
-            days[i] = records[i].m_date;
+            days[i] = records[i].m_date / 100.0;
             followerOutputs[i] = records[i].m_followerPrice;
             leaderPrices[i] = records[i].m_leaderPrice;
         }
@@ -32,7 +32,7 @@ public class NeuralNetUtil {
     }
 
     public void updateFeaturesWithRecord(Record record) {
-        INDArray newDateFeature = Nd4j.create(new double[]{record.m_date}, new int[]{1, 1});
+        INDArray newDateFeature = Nd4j.create(new double[]{record.m_date / 100.0}, new int[]{1, 1});
         INDArray newFollowerFeature = Nd4j.create(new double[]{record.m_followerPrice}, new int[]{1, 1});
         INDArray newLeaderFeature = Nd4j.create(new double[]{record.m_leaderPrice}, new int[]{1, 1});
 
@@ -41,7 +41,7 @@ public class NeuralNetUtil {
         leaderPriceFeature = Nd4j.vstack(leaderPriceFeature, newLeaderFeature);
     }
 
-    public INDArray createInputFeatureVector(int day, double leaderPrice) {
+    public INDArray createInputFeatureVector(double day, double leaderPrice) {
         INDArray newDateFeature = Nd4j.create(new double[]{day}, new int[]{1, 1});
         INDArray newLeaderFeature = Nd4j.create(new double[]{leaderPrice}, new int[]{1, 1});
         return Nd4j.hstack(newDateFeature, newLeaderFeature);
