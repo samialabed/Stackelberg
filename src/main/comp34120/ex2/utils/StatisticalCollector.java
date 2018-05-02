@@ -24,13 +24,13 @@ public class StatisticalCollector {
     @Override
     public String toString() {
         String repr = String.format("Total Profit is: %f\n", this.totalProfit);
-        double mse = 0;
+        double sum = 0;
         for(int i = 0; i < predictions.size(); i++) {
-            mse += Math.pow(targets.get(i) - predictions.get(i), 2);
+            sum += Math.abs(targets.get(i) - predictions.get(i));
         }
-        mse /= (double)predictions.size();
+        double mean = sum / (double)predictions.size();
 
-        repr += String.format("Mean Squared Error: %f\n", mse);
+        repr += String.format("Average Error: %f\n", mean);
         return repr;
     }
 }
