@@ -1,8 +1,6 @@
 package comp34120.ex2.math.calculus;
 
-
-import math.functions.IFunction;
-
+import comp34120.ex2.math.functions.IFunction;
 
 /**
  * A static library for derivative calculations of functions.

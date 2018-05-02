@@ -1,4 +1,4 @@
-package math.functions;
+package comp34120.ex2.math.functions;
 
 /**
  * Defines a mathematical relationship that represents a function.  Used to describe a relationship between an input

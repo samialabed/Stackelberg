@@ -2,7 +2,7 @@ package comp34120.ex2.math.functions;
 
 import comp34120.ex2.regression.Regression;
 
-public class RegressionPayoffFunction implements math.functions.IFunction {
+public class RegressionPayoffFunction implements IFunction {
     private final Regression regression;
     private final double date;
 

@@ -13,7 +13,6 @@ import org.nd4j.linalg.activations.Activation;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.dataset.api.iterator.DataSetIterator;
 import org.nd4j.linalg.learning.config.Adam;
-import org.nd4j.linalg.learning.config.Nesterovs;
 import org.nd4j.linalg.lossfunctions.LossFunctions;
 
 public class NonLinearRegression implements Regression {
@@ -66,7 +65,7 @@ public class NonLinearRegression implements Regression {
 
     @Override
     public float predictFollowerPrice(double day, double leaderPrice) {
-        INDArray inputFeatureVector = neuralNetUtil.createInputFeatureVector(day / 100.0, leaderPrice);
+        INDArray inputFeatureVector = neuralNetUtil.createInputFeatureVector(day, leaderPrice);
         INDArray predictedPrice = neuralNetwork.output(inputFeatureVector, false);
         return predictedPrice.getFloat(0);
     }

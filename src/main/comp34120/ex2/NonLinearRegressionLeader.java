@@ -5,8 +5,8 @@ import comp34120.ex2.regression.Regression;
 import comp34120.ex2.utils.NeuralNetUtil;
 import comp34120.ex2.utils.PlatformUtil;
 import comp34120.ex2.utils.StatisticalCollector;
-import minimizer.AnalyticPayoffMaximizer;
-import minimizer.PayoffMaximizer;
+import comp34120.ex2.maximizer.AnalyticPayoffMaximizer;
+import comp34120.ex2.maximizer.PayoffMaximizer;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;

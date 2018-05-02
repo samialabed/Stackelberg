@@ -1,4 +1,4 @@
-package minimizer;
+package comp34120.ex2.maximizer;
 
 import comp34120.ex2.regression.Regression;
 
