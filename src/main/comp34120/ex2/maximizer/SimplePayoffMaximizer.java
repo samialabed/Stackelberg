@@ -21,7 +21,7 @@ public class SimplePayoffMaximizer implements PayoffMaximizer{
     public double getOptimalPrice(double date) {
         double optimalPayoff = -1000000;
         double optimalPrice = 1.0;
-        for(double price = 1.0; price <= priceUpperBound; price += 0.1) {
+        for(double price = 1.0; price <= priceUpperBound; price += 0.005) {
             double predictedPayoff = getPredictedPayoff(date, price);
             if(predictedPayoff > optimalPayoff) {
                 optimalPayoff = predictedPayoff;

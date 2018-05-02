@@ -1,5 +1,6 @@
 package comp34120.ex2;
 
+import comp34120.ex2.maximizer.SimplePayoffMaximizer;
 import comp34120.ex2.regression.NonLinearRegression;
 import comp34120.ex2.regression.Regression;
 import comp34120.ex2.utils.NeuralNetUtil;
@@ -13,15 +14,12 @@ import java.rmi.RemoteException;
 
 // Linear Regression leader using NN
 final class NonLinearRegressionLeader extends PlayerImpl {
-    private final Regression regression;
-    private final PayoffMaximizer maximizer;
-    private final StatisticalCollector collector;
+    private PayoffMaximizer maximizer;
+    private StatisticalCollector collector;
+    private Regression regression;
 
     public NonLinearRegressionLeader() throws RemoteException, NotBoundException {
-        super(PlayerType.LEADER, "Linear Regression NN Leader");
-        this.regression = new NonLinearRegression(new NeuralNetUtil(PlatformUtil.getAllRecordsUntilDay(platform, 100)));
-        this.maximizer = new AnalyticPayoffMaximizer(regression);
-        this.collector = new StatisticalCollector();
+        super(PlayerType.LEADER, "Non Linear Regression NN Leader");
     }
 
     @Override
@@ -35,6 +33,9 @@ final class NonLinearRegressionLeader extends PlayerImpl {
      */
     @Override
     public void startSimulation(int simulationSteps) throws RemoteException {
+        regression = new NonLinearRegression(new NeuralNetUtil(PlatformUtil.getAllRecordsUntilDay(platform, 100)));
+        maximizer = new SimplePayoffMaximizer(regression);
+        collector = new StatisticalCollector();
         super.startSimulation(simulationSteps);
     }
 

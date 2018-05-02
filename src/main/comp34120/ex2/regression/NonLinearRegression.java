@@ -19,13 +19,13 @@ public class NonLinearRegression implements Regression {
     // Random number generator seed, for reproducibility
     private static final int seed = 12345;
     // Number of epochs (full passes of the data)
-    private static final int nEpochs = 3;
+    private static final int nEpochs = 4;
     // Network learning rate
-    private static final double learningRate = 0.001;
+    private static final double learningRate = 0.00002;
     // Create the network
     private static final int numInput = 2;
     private static final int numOutputs = 1;
-    private static final int nHidden = 10;
+    private static final int nHidden = 3;
 
     private final MultiLayerNetwork neuralNetwork;
     private final NeuralNetUtil neuralNetUtil;
@@ -35,8 +35,8 @@ public class NonLinearRegression implements Regression {
         this.neuralNetwork = new MultiLayerNetwork(new NeuralNetConfiguration.Builder()
                                                            .seed(seed)
                                                            .weightInit(WeightInit.XAVIER)
-                                                           .regularization(true).l2(0.0005)
-                                                           .updater(new Adam(learningRate, 0.5, 0.99,
+                                                           .updater(new Adam(learningRate, Adam.DEFAULT_ADAM_BETA1_MEAN_DECAY,
+                                                                             Adam.DEFAULT_ADAM_BETA2_VAR_DECAY,
                                                                              Adam.DEFAULT_ADAM_EPSILON))
                                                            .list()
                                                            .layer(0,
@@ -66,7 +66,7 @@ public class NonLinearRegression implements Regression {
     @Override
     public float predictFollowerPrice(double day, double leaderPrice) {
         INDArray inputFeatureVector = neuralNetUtil.createInputFeatureVector(day, leaderPrice);
-        INDArray predictedPrice = neuralNetwork.output(inputFeatureVector, false);
+        INDArray predictedPrice = neuralNetwork.output(inputFeatureVector);
         return predictedPrice.getFloat(0);
     }
 
