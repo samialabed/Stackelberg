@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Class-Path: poi-3.7-20101029.jar
+Created-By: 1.8.0_162 (Oracle Corporation)
+Main-Class: comp34120.ex2.Main
+

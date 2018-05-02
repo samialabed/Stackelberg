@@ -46,8 +46,7 @@ final class SimpleLeader extends PlayerImpl {
         return (float) (p_mean + m_randomizer.nextGaussian() * p_diversity);
     }
 
-    public static void main(final String[] p_args)
-            throws RemoteException, NotBoundException {
+    public static void main(final String[] p_args) throws RemoteException, NotBoundException {
         new SimpleLeader();
     }
 

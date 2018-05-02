@@ -10,14 +10,15 @@ public class NeuralNetUtil {
     private INDArray dateFeature;
     private INDArray leaderPriceFeature;
     private INDArray followerOutput;
+    private static final double DATE_SCALE = 100.0;
 
     public NeuralNetUtil(Record[] records) {
-        float[] days = new float[records.length];
-        float[] leaderPrices = new float[records.length];
-        float[] followerOutputs = new float[records.length];
+        double[] days = new double[records.length];
+        double[] leaderPrices = new double[records.length];
+        double[] followerOutputs = new double[records.length];
 
         for (int i = 0; i < records.length; i++) {
-            days[i] = records[i].m_date;
+            days[i] = records[i].m_date / 100.0;
             followerOutputs[i] = records[i].m_followerPrice;
             leaderPrices[i] = records[i].m_leaderPrice;
         }
@@ -32,18 +33,18 @@ public class NeuralNetUtil {
     }
 
     public void updateFeaturesWithRecord(Record record) {
-        INDArray newDateFeature = Nd4j.create(new float[]{record.m_date}, new int[]{1, 1});
-        INDArray newFollowerFeature = Nd4j.create(new float[]{record.m_followerPrice}, new int[]{1, 1});
-        INDArray newLeaderFeature = Nd4j.create(new float[]{record.m_leaderPrice}, new int[]{1, 1});
+        INDArray newDateFeature = Nd4j.create(new double[]{record.m_date / DATE_SCALE}, new int[]{1, 1});
+        INDArray newFollowerFeature = Nd4j.create(new double[]{record.m_followerPrice}, new int[]{1, 1});
+        INDArray newLeaderFeature = Nd4j.create(new double[]{record.m_leaderPrice}, new int[]{1, 1});
 
         dateFeature = Nd4j.vstack(dateFeature, newDateFeature);
         followerOutput = Nd4j.vstack(followerOutput, newFollowerFeature);
         leaderPriceFeature = Nd4j.vstack(leaderPriceFeature, newLeaderFeature);
     }
 
-    public INDArray createInputFeatureVector(int day, float leaderPrice) {
-        INDArray newDateFeature = Nd4j.create(new float[]{day}, new int[]{1, 1});
-        INDArray newLeaderFeature = Nd4j.create(new float[]{leaderPrice}, new int[]{1, 1});
+    public INDArray createInputFeatureVector(double day, double leaderPrice) {
+        INDArray newDateFeature = Nd4j.create(new double[]{day / DATE_SCALE}, new int[]{1, 1});
+        INDArray newLeaderFeature = Nd4j.create(new double[]{leaderPrice}, new int[]{1, 1});
         return Nd4j.hstack(newDateFeature, newLeaderFeature);
     }
 
