@@ -12,16 +12,16 @@ import org.deeplearning4j.optimize.listeners.ScoreIterationListener;
 import org.nd4j.linalg.activations.Activation;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.dataset.api.iterator.DataSetIterator;
-import org.nd4j.linalg.learning.config.Nesterovs;
+import org.nd4j.linalg.learning.config.Adam;
 import org.nd4j.linalg.lossfunctions.LossFunctions;
 
 public class LinearRegression implements Regression {
     // Random number generator seed, for reproducibility
     private static final int seed = 12345;
     // Number of epochs (full passes of the data)
-    private static final int nEpochs = 2;
+    private static final int nEpochs = 30;
     // Network learning rate
-    private static final double learningRate = 0.01;
+    private static final double learningRate = 0.001;
     // Create the network
     private static final int numInput = 2;
     private static final int numOutputs = 1;
@@ -33,28 +33,40 @@ public class LinearRegression implements Regression {
 
     public LinearRegression(NeuralNetUtil neuralNetUtil) {
         this.neuralNetUtil = neuralNetUtil;
-        // TODO(samialab): configure the network properly
+        OutputLayer outputLayer = new OutputLayer.Builder().nIn(nHidden)
+                                                           .nOut(numOutputs)
+                                                           .lossFunction(LossFunctions.LossFunction.SQUARED_LOSS)
+                                                           .activation(Activation.IDENTITY)
+                                                           .build();
+
+        DenseLayer linearLayer = new DenseLayer.Builder().nIn(numInput)
+                                                         .nOut(nHidden)
+                                                         .activation(Activation.IDENTITY)
+                                                         .build();
+
         this.neuralNetwork = new MultiLayerNetwork(new NeuralNetConfiguration.Builder()
                                                            .seed(seed)
                                                            .weightInit(WeightInit.XAVIER)
-                                                           .updater(new Nesterovs(learningRate, 0.9))
+                                                           .updater(new Adam(learningRate,
+                                                                             Adam.DEFAULT_ADAM_BETA1_MEAN_DECAY,
+                                                                             Adam.DEFAULT_ADAM_BETA2_VAR_DECAY,
+                                                                             Adam.DEFAULT_ADAM_EPSILON))
                                                            .list()
-                                                           .layer(0,
-                                                                  new DenseLayer.Builder().nIn(numInput)
-                                                                                          .nOut(nHidden)
-                                                                                          .activation(Activation.TANH)
-                                                                                          .build())
-                                                           .layer(1,
-                                                                  new OutputLayer.Builder(LossFunctions.LossFunction
-                                                                                                  .MSE)
-                                                                          .activation(Activation.IDENTITY)
-                                                                          .nIn(nHidden).nOut(numOutputs)
-                                                                          .build())
+                                                           .layer(0, linearLayer)
+                                                           .layer(1, outputLayer)
                                                            .pretrain(false)
                                                            .backprop(true)
                                                            .build());
         neuralNetwork.init();
         neuralNetwork.setListeners(new ScoreIterationListener(1));
+
+        DataSetIterator trainingDataIterator = new ListDataSetIterator<>(neuralNetUtil.getTrainingDataSet().asList());
+        // Train the network on the full data set, and evaluate in periodically
+        // free operation to do at construction
+        for (int i = 0; i < nEpochs * 10; i++) {
+            trainingDataIterator.reset();
+            neuralNetwork.fit(trainingDataIterator);
+        }
     }
 
     @Override
