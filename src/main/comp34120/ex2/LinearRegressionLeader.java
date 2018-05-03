@@ -29,7 +29,7 @@ final class LinearRegressionLeader extends PlayerImpl {
     @Override
     public void startSimulation(int simulationSteps) throws RemoteException {
         this.regression = new LinearRegression(new NeuralNetUtil(PlatformUtil.getAllRecordsUntilDay(platform, 100)));
-        this.maximizer = new AnalyticPayoffMaximizer(regression);
+        this.maximizer = new SimplePayoffMaximizer(regression);
         this.collector = new StatisticalCollector();
         super.startSimulation(simulationSteps);
     }
