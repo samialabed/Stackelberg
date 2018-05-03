@@ -8,7 +8,6 @@ import org.deeplearning4j.nn.conf.layers.DenseLayer;
 import org.deeplearning4j.nn.conf.layers.OutputLayer;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import org.deeplearning4j.nn.weights.WeightInit;
-import org.deeplearning4j.optimize.listeners.ScoreIterationListener;
 import org.nd4j.linalg.activations.Activation;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.dataset.api.iterator.DataSetIterator;
@@ -21,7 +20,7 @@ public class LinearRegression implements Regression {
     // Number of epochs (full passes of the data)
     private static final int nEpochs = 50;
     // Network learning rate
-    private static final double learningRate = 0.001;
+    private static final double learningRate = 0.00025;
     // Create the network
     private static final int numInput = 2;
     private static final int numOutputs = 1;
