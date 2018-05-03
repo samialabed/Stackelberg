@@ -19,7 +19,7 @@ public class LinearRegression implements Regression {
     // Random number generator seed, for reproducibility
     private static final int seed = 12345;
     // Number of epochs (full passes of the data)
-    private static final int nEpochs = 30;
+    private static final int nEpochs = 50;
     // Network learning rate
     private static final double learningRate = 0.001;
     // Create the network
@@ -58,7 +58,9 @@ public class LinearRegression implements Regression {
                                                            .backprop(true)
                                                            .build());
         neuralNetwork.init();
-        neuralNetwork.setListeners(new ScoreIterationListener(1));
+
+//        Debugging listerner, not needed in production
+//        neuralNetwork.setListeners(new ScoreIterationListener(1));
 
         DataSetIterator trainingDataIterator = new ListDataSetIterator<>(neuralNetUtil.getTrainingDataSet().asList());
         // Train the network on the full data set, and evaluate in periodically
