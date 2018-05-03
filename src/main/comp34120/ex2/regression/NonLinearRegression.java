@@ -53,7 +53,7 @@ public class NonLinearRegression implements Regression {
                                                            .backprop(true)
                                                            .build());
         neuralNetwork.init();
-        neuralNetwork.setListeners(new ScoreIterationListener(1));
+//        neuralNetwork.setListeners(new ScoreIterationListener(1));
 
         DataSetIterator trainingDataIterator = new ListDataSetIterator<>(neuralNetUtil.getTrainingDataSet().asList());
         // Train the network on the full data set, and evaluate in periodically

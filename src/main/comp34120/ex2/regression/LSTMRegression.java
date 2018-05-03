@@ -51,7 +51,7 @@ public class LSTMRegression implements Regression {
                                                          .build();
 
 
-        RnnOutputLayer rnnOutputLayer = new RnnOutputLayer.Builder().activation(Activation.SOFTSIGN)
+        RnnOutputLayer rnnOutputLayer = new RnnOutputLayer.Builder().activation(Activation.IDENTITY)
                                                                     .lossFunction(LossFunctions.LossFunction.MCXENT)
                                                                     .nIn(nHidden)
                                                                     .nOut(numOutputs)
