@@ -12,7 +12,7 @@ import comp34120.ex2.maximizer.PayoffMaximizer;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
-// Linear Regression leader using NN
+// Non Linear Regression leader using NN
 final class NonLinearRegressionLeader extends PlayerImpl {
     private PayoffMaximizer maximizer;
     private StatisticalCollector collector;
