@@ -72,25 +72,33 @@ final class Group5Leader extends PlayerImpl {
 
         // Log data for this day
         collector.addStatistics(lastDayPrediction, lastDayRecord.m_followerPrice, lastDayProfit);
-        platform.log(playerType, "Predicted follower price: " + predictedFollowerPrice);
-        platform.log(playerType, "Last day profit " + lastDayProfit);
+        if(logLevel == LOG_LEVELS.DEBUG)
+        {
+            platform.log(playerType, "Predicted follower price: " + predictedFollowerPrice);
+            platform.log(playerType, "Last day profit " + lastDayProfit);
 
 
-        if (newDate == 130) {
-            platform.log(playerType, this.collector.toString());
+            if (newDate == 130) {
+                platform.log(playerType, this.collector.toString());
+            }
         }
+
     }
 
     public static void main(final String[] p_args) throws RemoteException, NotBoundException {
-        if (p_args.length != 1) {
-            System.err.println("Usage: java Group5Leader (linear| nonlinear| lstm)");
+        if (p_args.length < 1) {
+            System.err.println("Usage: java Group5Leader (linear| nonlinear| lstm) [--debug]");
             System.exit(-1);
         }
         String leaderType = p_args[0].toLowerCase();
         if (!(leaderType.equals("linear") || leaderType.equals("nonlinear") || leaderType.equals("lstm"))) {
-            System.err.println("Usage: java Group5Leader (linear| nonlinear| lstm)");
+            System.err.println("Usage: java Group5Leader (linear| nonlinear| lstm) [--debug]");
             System.exit(-1);
         }
-        new Group5Leader(leaderType);
+
+        PlayerImpl leader = new Group5Leader(leaderType);
+        if(p_args.length == 2)
+            if(p_args[1].toLowerCase().equals("--debug"))
+                leader.setLogLevel(LOG_LEVELS.DEBUG);
     }
 }
