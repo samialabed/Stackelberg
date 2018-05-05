@@ -34,7 +34,7 @@ public class LinearRegression implements Regression {
         this.neuralNetUtil = neuralNetUtil;
         OutputLayer outputLayer = new OutputLayer.Builder().nIn(nHidden)
                                                            .nOut(numOutputs)
-                                                           .lossFunction(LossFunctions.LossFunction.SQUARED_LOSS)
+                                                           .lossFunction(LossFunctions.LossFunction.MSE)
                                                            .activation(Activation.IDENTITY)
                                                            .build();
 
