@@ -10,11 +10,8 @@ import java.rmi.server.UnicastRemoteObject;
  * To implement some common method of players
  */
 public abstract class PlayerImpl implements Player {
-    public enum LOG_LEVELS {NONE, DEBUG}
-
     /* The stub of the platform */
     protected Platform platform;
-    protected LOG_LEVELS logLevel = LOG_LEVELS.NONE;
     /* The type of this player, i.e. LEADER or FOLLOWER */
     protected final PlayerType playerType;
 
@@ -25,10 +22,6 @@ public abstract class PlayerImpl implements Player {
         registerPlatform(playerDisplayName);
     }
 
-    protected void setLogLevel(LOG_LEVELS logLevel)
-    {
-        this.logLevel = logLevel;
-    }
     /**
      * Register this instance to RMI registry
      *

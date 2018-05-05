@@ -7,6 +7,22 @@ import comp34120.ex2.Record;
 import java.rmi.RemoteException;
 
 public class PlatformUtil {
+    private enum LOG_LEVELS {NONE, DEBUG}
+
+    private static LOG_LEVELS logger = LOG_LEVELS.NONE;
+
+    public static void enableLogging() {
+        logger = LOG_LEVELS.DEBUG;
+    }
+
+    public static void disableLogging() {
+        logger = LOG_LEVELS.NONE;
+    }
+
+    public static boolean isDebugMode() {
+        return logger == PlatformUtil.LOG_LEVELS.DEBUG;
+    }
+
     public static Record[] getAllRecordsUntilDay(Platform platform, int day) throws RemoteException {
         Record[] records = new Record[day];
         for (int i = 1; i <= day; i++) {

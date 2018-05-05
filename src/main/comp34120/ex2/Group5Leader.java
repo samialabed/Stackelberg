@@ -15,10 +15,11 @@ import java.rmi.RemoteException;
 
 // Linear Regression leader using NN
 final class Group5Leader extends PlayerImpl {
+    final private String leaderStrategy;
+
     private PayoffMaximizer maximizer;
     private StatisticalCollector collector;
     private Regression regression;
-    final private String leaderStrategy;
 
     public Group5Leader(String leaderType) throws RemoteException, NotBoundException {
         super(PlayerType.LEADER, leaderType + " Regression NN Leader");
@@ -47,9 +48,13 @@ final class Group5Leader extends PlayerImpl {
                 System.exit(-1);
         }
 
-        this.regression = new LinearRegression(neuralNetUtil);
         this.maximizer = new SimplePayoffMaximizer(regression);
-        this.collector = new StatisticalCollector();
+        if (PlatformUtil.isDebugMode()) {
+            this.collector = new StatisticalCollector();
+        } else {
+            this.collector = null;
+        }
+
         super.startSimulation(simulationSteps);
     }
 
@@ -71,9 +76,8 @@ final class Group5Leader extends PlayerImpl {
         platform.publishPrice(playerType, (float) leaderNewPrice);
 
         // Log data for this day
-        collector.addStatistics(lastDayPrediction, lastDayRecord.m_followerPrice, lastDayProfit);
-        if(logLevel == LOG_LEVELS.DEBUG)
-        {
+        if (PlatformUtil.isDebugMode()) {
+            collector.addStatistics(lastDayPrediction, lastDayRecord.m_followerPrice, lastDayProfit);
             platform.log(playerType, "Predicted follower price: " + predictedFollowerPrice);
             platform.log(playerType, "Last day profit " + lastDayProfit);
 
@@ -86,7 +90,7 @@ final class Group5Leader extends PlayerImpl {
     }
 
     public static void main(final String[] p_args) throws RemoteException, NotBoundException {
-        if (p_args.length < 1) {
+        if (p_args.length != 1 && p_args.length != 2) {
             System.err.println("Usage: java Group5Leader (linear| nonlinear| lstm) [--debug]");
             System.exit(-1);
         }
@@ -96,9 +100,12 @@ final class Group5Leader extends PlayerImpl {
             System.exit(-1);
         }
 
+        if (p_args.length == 2) {
+            if (p_args[1].toLowerCase().equals("--debug")) {
+                PlatformUtil.enableLogging();
+            }
+        }
+
         PlayerImpl leader = new Group5Leader(leaderType);
-        if(p_args.length == 2)
-            if(p_args[1].toLowerCase().equals("--debug"))
-                leader.setLogLevel(LOG_LEVELS.DEBUG);
     }
 }

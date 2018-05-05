@@ -15,3 +15,9 @@ java -jar Group5Leader linear
 ```
 java -jar Group5Leader lstm
 ```
+
+
+if you want to see a debug information including profit gains run
+```
+java -jar Group5Leader nonlinear --debug
+```
