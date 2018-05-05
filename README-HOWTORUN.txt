@@ -11,7 +11,7 @@ java -jar Group5Leader nonlinear
 java -jar Group5Leader linear
 ```
 
-* To run the recurring neuronet LSTM
+* To run the recurrent neuralnet LSTM
 ```
 java -jar Group5Leader lstm
 ```
