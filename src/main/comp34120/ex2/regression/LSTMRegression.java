@@ -47,12 +47,12 @@ public class LSTMRegression implements Regression {
 
         GravesLSTM gravesLSTM2 = new GravesLSTM.Builder().nIn(nHidden)
                                                          .nOut(nHidden)
-                                                         .activation(Activation.TANH)
+                                                         .activation(Activation.SOFTSIGN)
                                                          .build();
 
 
         RnnOutputLayer rnnOutputLayer = new RnnOutputLayer.Builder().activation(Activation.IDENTITY)
-                                                                    .lossFunction(LossFunctions.LossFunction.MCXENT)
+                                                                    .lossFunction(LossFunctions.LossFunction.MSE)
                                                                     .nIn(nHidden)
                                                                     .nOut(numOutputs)
                                                                     .build();
