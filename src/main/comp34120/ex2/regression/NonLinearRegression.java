@@ -19,7 +19,7 @@ public class NonLinearRegression implements Regression {
     // Random number generator seed, for reproducibility
     private static final int seed = 12345;
     // Number of epochs (full passes of the data)
-    private static final int nEpochs = 4;
+    private static final int nEpochs = 10;
     // Network learning rate
     private static final double learningRate = 0.00002;
     // Create the network
@@ -34,7 +34,7 @@ public class NonLinearRegression implements Regression {
         this.neuralNetUtil = neuralNetUtil;
         this.neuralNetwork = new MultiLayerNetwork(new NeuralNetConfiguration.Builder()
                                                            .seed(seed)
-                                                           .weightInit(WeightInit.XAVIER)
+                                                           .weightInit(WeightInit.UNIFORM)
                                                            .updater(new Adam(learningRate, Adam.DEFAULT_ADAM_BETA1_MEAN_DECAY,
                                                                              Adam.DEFAULT_ADAM_BETA2_VAR_DECAY,
                                                                              Adam.DEFAULT_ADAM_EPSILON))
@@ -42,7 +42,7 @@ public class NonLinearRegression implements Regression {
                                                            .layer(0,
                                                                   new DenseLayer.Builder().nIn(numInput)
                                                                                           .nOut(nHidden)
-                                                                                          .activation(Activation.TANH)
+                                                                                          .activation(Activation.RATIONALTANH)
                                                                                           .build())
                                                            .layer(1,
                                                                   new OutputLayer.Builder(LossFunctions.LossFunction.MSE)
@@ -57,7 +57,7 @@ public class NonLinearRegression implements Regression {
 
         DataSetIterator trainingDataIterator = new ListDataSetIterator<>(neuralNetUtil.getTrainingDataSet().asList());
         // Train the network on the full data set, and evaluate in periodically
-        for (int i = 0; i < 200; i++) {
+        for (int i = 0; i < 250; i++) {
             trainingDataIterator.reset();
             neuralNetwork.fit(trainingDataIterator);
         }
