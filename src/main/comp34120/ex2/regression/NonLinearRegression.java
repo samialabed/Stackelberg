@@ -8,7 +8,6 @@ import org.deeplearning4j.nn.conf.layers.DenseLayer;
 import org.deeplearning4j.nn.conf.layers.OutputLayer;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import org.deeplearning4j.nn.weights.WeightInit;
-import org.deeplearning4j.optimize.listeners.ScoreIterationListener;
 import org.nd4j.linalg.activations.Activation;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.dataset.api.iterator.DataSetIterator;
@@ -19,7 +18,7 @@ public class NonLinearRegression implements Regression {
     // Random number generator seed, for reproducibility
     private static final int seed = 12345;
     // Number of epochs (full passes of the data)
-    private static final int nEpochs = 4;
+    private static final int nEpochs = 10;
     // Network learning rate
     private static final double learningRate = 0.00002;
     // Create the network
@@ -34,18 +33,21 @@ public class NonLinearRegression implements Regression {
         this.neuralNetUtil = neuralNetUtil;
         this.neuralNetwork = new MultiLayerNetwork(new NeuralNetConfiguration.Builder()
                                                            .seed(seed)
-                                                           .weightInit(WeightInit.XAVIER)
-                                                           .updater(new Adam(learningRate, Adam.DEFAULT_ADAM_BETA1_MEAN_DECAY,
+                                                           .weightInit(WeightInit.UNIFORM)
+                                                           .updater(new Adam(learningRate,
+                                                                             Adam.DEFAULT_ADAM_BETA1_MEAN_DECAY,
                                                                              Adam.DEFAULT_ADAM_BETA2_VAR_DECAY,
                                                                              Adam.DEFAULT_ADAM_EPSILON))
                                                            .list()
                                                            .layer(0,
-                                                                  new DenseLayer.Builder().nIn(numInput)
-                                                                                          .nOut(nHidden)
-                                                                                          .activation(Activation.TANH)
-                                                                                          .build())
+                                                                  new DenseLayer.Builder()
+                                                                          .nIn(numInput)
+                                                                          .nOut(nHidden)
+                                                                          .activation(Activation.RATIONALTANH)
+                                                                          .build())
                                                            .layer(1,
-                                                                  new OutputLayer.Builder(LossFunctions.LossFunction.MSE)
+                                                                  new OutputLayer.Builder(LossFunctions.LossFunction
+                                                                                                  .MSE)
                                                                           .activation(Activation.IDENTITY)
                                                                           .nIn(nHidden).nOut(numOutputs)
                                                                           .build())
@@ -57,7 +59,7 @@ public class NonLinearRegression implements Regression {
 
         DataSetIterator trainingDataIterator = new ListDataSetIterator<>(neuralNetUtil.getTrainingDataSet().asList());
         // Train the network on the full data set, and evaluate in periodically
-        for (int i = 0; i < 200; i++) {
+        for (int i = 0; i < 250; i++) {
             trainingDataIterator.reset();
             neuralNetwork.fit(trainingDataIterator);
         }
