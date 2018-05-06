@@ -1,4 +1,3 @@
 Manifest-Version: 1.0
-Class-Path: comp34120.ex2.Group5Leader
 Main-Class: comp34120.ex2.Group5Leader
 
